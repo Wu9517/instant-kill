@@ -11,7 +11,7 @@ import java.util.Date;
 @Data
 @ToString
 public class SuccessKilled {
-    private long instantillId;
+    private long instantkillId;
 
     private long userPhone;
 

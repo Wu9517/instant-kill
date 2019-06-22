@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wuzhiyang.dao.SuccessKilledDao">
+    <insert id="insertSuccessKilled">
+/*ignore 表示插入的数据存在的话则忽略掉*/
+         insert ignore into success_killed(instantkill_id,user_phone,state)
+        values (#{instantkillId},#{userPhone},0)
+    </insert>
+
+    <select id="queryByIdWithSeckill" resultType="SuccessKilled">
+         select
+          sk.instantkill_id,
+          sk.user_phone,
+          sk.create_time,
+          sk.state,
+          s.instantkill_id as "instantKill.instantkill_id",
+          s.name as "instantKill.name",
+          s.number as  "instantKill.number",
+          s.start_time as "instantKill.start_time",
+          s.end_time as "instantKill.end_time",
+          s.create_time as "instantKill.create_time"
+        from success_killed sk
+        inner join instantkill s on sk.instantkill_id = s.instantkill_id
+        where sk.instantkill_id=#{instantkillId} and sk.user_phone=#{userPhone}
+    </select>
+</mapper>
