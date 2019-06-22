@@ -26,11 +26,11 @@
 
     <!--mysql调用存储过程-->
     <select id="killByProcedure" statementType="CALLABLE">
-        call execute_instantkill(
+        call `execute_instantkill.`(
          #{instantkillId,jdbcType=BIGINT,mode=IN},
          #{phone,jdbcType=BIGINT,mode=IN},
-         #{killTime,jdbcType=TIMESTAMP,mode=IN},
-         #{result,jdbcType=INTEGER,mode=OUT}
-        )
+        #{killTime,jdbcType=TIMESTAMP,mode=IN},
+        #{result,jdbcType=INTEGER,mode=OUT}
+        );
     </select>
 </mapper>

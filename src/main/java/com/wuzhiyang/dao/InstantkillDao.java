@@ -41,5 +41,5 @@ public interface InstantkillDao {
      * 使用存储过程执行秒杀
      * @param paramMap
      */
-    void killByProcedure(Map<String, String> paramMap);
+    void killByProcedure(Map<String, Object> paramMap);
 }
