@@ -2,6 +2,7 @@ package com.wuzhiyang.service.impl;
 
 import com.wuzhiyang.dao.InstantkillDao;
 import com.wuzhiyang.dao.SuccessKilledDao;
+import com.wuzhiyang.dao.cache.RedisDao;
 import com.wuzhiyang.dto.Exposer;
 import com.wuzhiyang.dto.InskillExecution;
 import com.wuzhiyang.entity.InstantKill;
@@ -36,6 +37,9 @@ public class InstantkillServiceImpl implements InstantkillService {
     @Autowired
     private SuccessKilledDao successKilledDao;
 
+    @Autowired
+    private RedisDao redisDao;
+
     private final Logger logger = LoggerFactory.getLogger(InstantkillServiceImpl.class);
 
     //md5盐值字符串,用于混淆MD5
@@ -53,7 +57,15 @@ public class InstantkillServiceImpl implements InstantkillService {
 
     @Override
     public Exposer exportInskillUrl(long inskillId) {
-        InstantKill instantKill = instantkillDao.queryById(inskillId);
+        InstantKill instantKill = redisDao.getIntKill(inskillId);
+        if (instantKill == null) {
+            instantKill = instantkillDao.queryById(inskillId);
+            if (instantKill == null) {
+                return new Exposer(false, inskillId);
+            } else {
+                redisDao.putSeckill(instantKill);
+            }
+        }
         Date startTime = instantKill.getStartTime();
         Date endTime = instantKill.getEndTime();
         //系统当前时间

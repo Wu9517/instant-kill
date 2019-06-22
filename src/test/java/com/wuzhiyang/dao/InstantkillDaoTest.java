@@ -1,5 +1,6 @@
 package com.wuzhiyang.dao;
 
+import com.wuzhiyang.dao.cache.RedisDao;
 import com.wuzhiyang.entity.InstantKill;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +20,9 @@ public class InstantkillDaoTest {
 
     @Autowired
     private InstantkillDao instantkillDao;
+
+    @Autowired
+    private RedisDao redisDao;
 
 
     @Test
@@ -47,7 +51,8 @@ public class InstantkillDaoTest {
 
     @Test
     public void killByProcedure() throws Exception {
-
+        InstantKill instantKill = instantkillDao.queryById(1001);
+        redisDao.putSeckill(instantKill);
     }
 
 }
